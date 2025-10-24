@@ -1,0 +1,35 @@
+
+
+services:
+  mysql_taller4:
+    image: mysql:8
+    container_name: mysql_taller4
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: admin123
+      MYSQL_DATABASE: pruebadb
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - taller4_net
+
+  node_app:
+    build: .
+    container_name: node_app
+    restart: always
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+    depends_on:
+      - mysql_taller4
+    networks:
+      - taller4_net
+
+networks:
+  taller4_net:
+
+volumes:
+  mysql_data:
